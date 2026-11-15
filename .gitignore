@@ -1,0 +1,6 @@
+node_modules/
+.DS_Store
+.env*
+.vercel/
+# Unlicensed reference media is intentionally kept out of this public repository.
+media/
