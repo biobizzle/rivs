@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#19231e" />
+  <meta name="description" content="An immersive interior design concept: architectural storytelling, tactile spaces, and scroll-driven motion." />
+  <meta property="og:title" content="RIVS — Interior experience concept" />
+  <meta property="og:description" content="Designing the feeling of being somewhere." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1600&q=85" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1600&q=85" fetchpriority="high" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+  <title>RIVS — Interior Design Experience</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="film-grain" aria-hidden="true"></div>
+  <header class="site-header" id="site-header">
+    <a class="brand" href="#top" aria-label="RIVS, back to top">
+      <span class="brand-symbol" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="brand-type">RIVS<small>INTERIOR STUDIO <span class="brand-demo">/ CONCEPT</span></small></span>
+    </a>
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Spaces</a>
+      <a href="#approach">Approach</a>
+    </nav>
+    <button class="nav-cta glass-pill" type="button" data-open-brief>Discuss a space <span class="cta-dot" aria-hidden="true"></span></button>
+    <button class="mobile-menu-trigger" id="menu-trigger" type="button" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open navigation">
+      <span></span><span></span>
+    </button>
+  </header>
+  <nav class="mobile-menu glass-surface" id="mobile-menu" aria-label="Mobile navigation" hidden>
+    <a href="#experience">Experience</a><a href="#projects">Spaces</a><a href="#approach">Approach</a><button type="button" data-open-brief>Discuss a space</button>
+  </nav>
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-grid-lines" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="hero-back-title" aria-hidden="true">RIVS</div>
+      <div class="hero-story">
+        <p class="eyebrow light"><span class="eyebrow-line"></span> INTERIORS WITH INTENTION</p>
+        <h1 id="hero-title">The art of<br /><em>being</em><br />somewhere.</h1>
+        <p class="hero-description">Not simply places to live. Spaces that leave a feeling.</p>
+        <a href="#experience" class="text-cta">Explore the experience <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="hero-architecture" id="hero-architecture">
+        <div class="hero-image-fallback" role="img" aria-label="Warm contemporary living room with sculptural furniture"></div>
+        <video class="hero-film" id="hero-video" data-source="media/architectural-camera.mp4" poster="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1600&q=85" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+        <div class="hero-architecture-shading" aria-hidden="true"></div>
+        <div class="hero-corner-mark top-left" aria-hidden="true"></div><div class="hero-corner-mark bottom-right" aria-hidden="true"></div>
+        <div class="hero-caption glass-surface"><span class="caption-index">01 / SPATIAL STUDY</span><strong>Stillness in motion.</strong><span class="caption-corner" aria-hidden="true">✳</span></div>
+      </div>
+      <div class="hero-aside"><span>EST. IN IMAGINATION</span><div class="vertical-line"></div><span>FORM × FEELING</span></div>
+      <div class="hero-foot"><span>AN EXPERIENCE IN SPACE</span><span>SCROLL TO ENTER <span class="scroll-indicator" aria-hidden="true">↓</span></span></div>
+    </section>
+    <section class="manifesto reveal" aria-labelledby="manifesto-title">
+      <span class="section-index">01 <span>—</span> THE PERSPECTIVE</span>
+      <h2 id="manifesto-title">A room is never<br />just <em>a room.</em></h2>
+      <p>Every line, texture, shadow and object changes how a space feels. We begin with that feeling, then give it form.</p>
+      <div class="manifesto-bottom-line"></div>
+    </section>
+    <section class="sequence" id="experience" aria-labelledby="sequence-title">
+      <div class="sequence-sticky">
+        <div class="sequence-background" aria-hidden="true"></div>
+        <div class="sequence-intro">
+          <span class="section-index">02 <span>—</span> THE TRANSFORMATION</span>
+          <h2 id="sequence-title">From empty<br />to <em>alive.</em></h2>
+          <p>A space comes to life, one decision at a time.</p>
+        </div>
+        <div class="scene-world" id="scene-world">
+          <div class="scene-side scene-side-left" aria-hidden="true"><img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1600&q=85" loading="lazy" alt="" /></div>
+          <div class="scene-main" id="scene-main">
+            <img class="scene-poster" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85" alt="An unfurnished living room that becomes a finished interior" />
+            <video id="transformation-video" data-source="media/room-transformation.mp4" poster="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85" muted playsinline preload="metadata" aria-label="Room changing from empty to thoughtfully furnished in response to scroll position"></video>
+            <div class="scene-video-shading" aria-hidden="true"></div>
+            <div class="scene-label glass-surface"><span class="live-dot" aria-hidden="true"></span> THE MAKING OF A SPACE</div>
+          </div>
+          <div class="scene-side scene-side-right" aria-hidden="true"><img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1600&q=85" loading="lazy" alt="" /></div>
+        </div>
+        <div class="sequence-caption" aria-live="off">
+          <div class="chapter-count" id="chapter-count">01 <span>/ 03</span></div>
+          <div class="chapter-copy"><h3 id="chapter-title">The possibility.</h3><p id="chapter-description">Before anything arrives, there is space to imagine.</p></div>
+        </div>
+        <div class="scene-progress" aria-hidden="true"><span class="scene-progress-track"><span id="scene-progress-fill"></span></span><span>SCROLL TO SHAPE THE SPACE</span></div>
+      </div>
+    </section>
+    <section class="transition-quote" aria-label="Studio philosophy">
+      <div class="transition-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=1600&q=85" loading="lazy" alt="" /></div>
+      <div class="transition-text reveal"><span class="section-index">CRAFTED, NOT DECORATED</span><p>We don't fill rooms.<br />We create <em>reasons to stay.</em></p></div>
+    </section>
+    <section class="projects" id="projects" aria-labelledby="projects-title">
+      <div class="projects-heading reveal"><div><span class="section-index">03 <span>—</span> SPACES & ATMOSPHERES</span><h2 id="projects-title">A feeling for<br /><em>every space.</em></h2></div><p>Three interior directions explored through material, proportion and light.</p></div>
+      <div class="project-grid">
+        <button class="project-tile project-tile-tall reveal" type="button" data-project="collected" aria-label="Open the Collected Living mood study">
+          <span class="project-image"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1600&q=85" alt="A characterful living room with emerald seating and collected artworks" loading="lazy" /><span class="project-image-shade"></span></span>
+          <span class="project-meta"><span>01 / MOOD STUDY</span><strong>Collected living</strong><span class="project-open" aria-hidden="true">+</span></span>
+        </button>
+        <button class="project-tile project-tile-short reveal" type="button" data-project="minimal" aria-label="Open the Quiet Geometry mood study">
+          <span class="project-image"><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=85" alt="A quiet minimal interior with soft neutrals and sculptural furniture" loading="lazy" /><span class="project-image-shade"></span></span>
+          <span class="project-meta"><span>02 / MOOD STUDY</span><strong>Quiet geometry</strong><span class="project-open" aria-hidden="true">+</span></span>
+        </button>
+        <button class="project-tile project-tile-medium reveal" type="button" data-project="earthy" aria-label="Open the Earth and Memory mood study">
+          <span class="project-image"><img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1600&q=85" alt="Warm earth-toned living room with wood and textiles" loading="lazy" /><span class="project-image-shade"></span></span>
+          <span class="project-meta"><span>03 / MOOD STUDY</span><strong>Earth & memory</strong><span class="project-open" aria-hidden="true">+</span></span>
+        </button>
+      </div>
+      <p class="study-notice">These are concept studies made from the supplied visual references, not completed client commissions.</p>
+    </section>
+    <section class="approach" id="approach" aria-labelledby="approach-title">
+      <div class="approach-photo"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1600&q=85" alt="Close-up of sculptural table lamp in a warm minimalist interior" loading="lazy" /></div>
+      <div class="approach-content reveal"><span class="section-index">04 <span>—</span> THE WAY WE THINK</span><h2 id="approach-title">Less noise.<br /><em>More meaning.</em></h2><p>Thoughtful interiors begin by listening to the way a space needs to work, and how the people inside it want to feel.</p>
+        <div class="approach-steps"><div><span>01</span><strong>Understand</strong><p>The people, the place, the possibilities.</p></div><div><span>02</span><strong>Shape</strong><p>Material, light, proportion and rhythm.</p></div><div><span>03</span><strong>Refine</strong><p>Every detail in service of the whole.</p></div></div>
+      </div>
+    </section>
+    <section class="outro" id="contact" aria-labelledby="contact-title">
+      <span class="section-index light">05 <span>—</span> THE NEXT SPACE</span>
+      <div class="outro-content"><h2 id="contact-title">What could your<br />space <em>become?</em></h2><button type="button" class="outro-button glass-pill" data-open-brief>Begin a conversation</button></div>
+      <div class="outro-foot"><span>MAKE ROOM FOR SOMETHING DIFFERENT</span><span>RIVS / CONCEPT EXPERIENCE</span></div>
+    </section>
+  </main>
+  <footer class="footer"><a href="#top" class="footer-wordmark">RIVS<span>®</span></a><p>An original interface concept. Brand, projects and contact details are demonstration content.</p><a href="#top">Back to top ↑</a></footer>
+  <dialog id="project-dialog" class="overlay-dialog project-dialog" aria-labelledby="project-dialog-title">
+    <button class="dialog-close" data-close-dialog aria-label="Close project details">×</button>
+    <div class="project-dialog-media"><img id="project-dialog-image" src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1600&q=85" alt="" /></div>
+    <div class="project-dialog-body"><span class="section-index">VISUAL / MOOD STUDY</span><h2 id="project-dialog-title">Collected living</h2><p id="project-dialog-description">A layered interior shaped by expressive objects and warm textures.</p><button class="dark-button" type="button" data-open-brief>Discuss a similar space</button></div>
+  </dialog>
+  <dialog id="brief-dialog" class="overlay-dialog brief-dialog" aria-labelledby="brief-title">
+    <button class="dialog-close" data-close-dialog aria-label="Close project brief">×</button>
+    <div class="brief-heading"><span class="section-index">PROJECT ENQUIRY / PROTOTYPE</span><h2 id="brief-title">Tell us about<br /><em>your space.</em></h2><p>In this prototype, the form creates a copyable project brief. It does not send information anywhere.</p></div>
+    <form id="brief-form"><label>Your name <input name="name" autocomplete="name" required maxlength="80" placeholder="Your name" /></label><label>Type of space <select name="space" required><option value="" disabled selected>Select a type</option><option>Residential</option><option>Hospitality</option><option>Retail</option><option>Workplace</option><option>Other</option></select></label><label>Tell us a little about it <textarea name="vision" rows="4" maxlength="1000" required placeholder="What are you imagining?"></textarea></label><button type="submit" class="dark-button" id="copy-brief">Copy project brief</button><p class="form-status" id="form-status" role="status" aria-live="polite"></p></form>
+  </dialog>
+</body>
+</html>
