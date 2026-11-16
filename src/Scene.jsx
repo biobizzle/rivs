@@ -47,58 +47,74 @@ function makeTexture(kind, size = 1024) {
 }
 
 function RoomShell() {
-  const oak=useMemo(()=>makeTexture('oak'),[]);
-  const plaster=useMemo(()=>makeTexture('plaster',512),[]);
-  const outdoor=useMemo(()=>{
-    const canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;
-    const ctx=canvas.getContext('2d'),gradient=ctx.createLinearGradient(0,0,0,512);
-    gradient.addColorStop(0,'#c6dbe0');gradient.addColorStop(.6,'#e9ece5');gradient.addColorStop(1,'#a0ae98');
-    ctx.fillStyle=gradient;ctx.fillRect(0,0,512,512);
-    for(let i=0;i<28;i++){
-      const x=noise(i+80)*512,y=325+noise(i+44)*100;
-      ctx.fillStyle='rgba(75,100,79,'+(.12+noise(i+10)*.19)+')';
+  const oak = useMemo(() => makeTexture('oak'), []);
+  const plaster = useMemo(() => makeTexture('plaster', 512), []);
+  const outdoor = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512; canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+    const gradient = ctx.createLinearGradient(0, 0, 0, 512);
+    gradient.addColorStop(0, '#c6dbe0'); gradient.addColorStop(.6, '#e9ece5'); gradient.addColorStop(1, '#a0ae98');
+    ctx.fillStyle = gradient; ctx.fillRect(0, 0, 512, 512);
+    for (let i = 0; i < 28; i++) {
+      const x = noise(i + 80) * 512;
+      const y = 325 + noise(i + 44) * 100;
+      ctx.fillStyle = `rgba(75,100,79,${.12 + noise(i + 10) * .19})`;
       ctx.beginPath();ctx.ellipse(x,y,18+noise(i)*49,45+noise(i+2)*76,0,0,Math.PI*2);ctx.fill();
     }
-    const t=new THREE.CanvasTexture(canvas);t.colorSpace=THREE.SRGBColorSpace;return t;
-  },[]);
-  useEffect(()=>()=>{oak.dispose();plaster.dispose();outdoor.dispose()},[oak,plaster,outdoor]);
-  const wallFinish=<meshStandardMaterial map={plaster} color="#e9e6de" roughness={.91}/>;
-  const trim=<meshStandardMaterial color="#e4dfd5" roughness={.76}/>;
-  const wallBlock=(key,position,size)=><mesh key={key} position={position} receiveShadow castShadow>
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    return texture;
+  }, []);
+  useEffect(() => () => { oak.dispose(); plaster.dispose(); outdoor.dispose(); }, [oak, plaster, outdoor]);
+
+  // The room is a single, walk-in volume. The window is cut into the LEFT
+  // return wall; there is no opening behind the sofa or any furniture.
+  const wallFinish = <meshStandardMaterial map={plaster} color="#e9e6de" roughness={.91} />;
+  const paintedTrim = <meshStandardMaterial color="#e4dfd5" roughness={.76} />;
+  const wallBlock = (key, position, size) => <mesh key={key} position={position} receiveShadow castShadow>
     <boxGeometry args={size}/>{wallFinish}
   </mesh>;
   return <group>
     <mesh rotation={[-Math.PI/2,0,0]} position={[0,-.035,-.15]} receiveShadow>
-      <planeGeometry args={[13,13.1]}/><meshStandardMaterial map={oak} color="#e4d5be" roughness={.86} metalness={0}/>
+      <planeGeometry args={[13,13.1]}/>
+      <meshStandardMaterial map={oak} color="#e4d5be" roughness={.86} metalness={0}/>
     </mesh>
+    {/* Full back wall is the anchor of the composition, not a photo panel. */}
     {wallBlock('back',[0,2.58,-6.05],[12.2,5.16,.18])}
     {wallBlock('right',[6.04,2.58,-.1],[.18,5.16,12])}
+    {/* Window opening: 2.8 metres along the LEFT wall. */}
     {wallBlock('left-rear',[-6.04,2.58,-4.91],[.18,5.16,2.29])}
     {wallBlock('left-front',[-6.04,2.58,2.43],[.18,5.16,6.9])}
     {wallBlock('left-sill',[-6.04,.61,-2.37],[.18,1.22,2.81])}
     {wallBlock('left-lintel',[-6.04,4.62,-2.37],[.18,1.08,2.81])}
     <mesh position={[-6.16,2.56,-2.37]} rotation={[0,Math.PI/2,0]}>
-      <planeGeometry args={[2.81,2.82]}/><meshBasicMaterial map={outdoor} toneMapped={false} side={THREE.DoubleSide}/>
+      <planeGeometry args={[2.81,2.82]}/>
+      <meshBasicMaterial map={outdoor} toneMapped={false} side={THREE.DoubleSide}/>
     </mesh>
     <mesh position={[-5.933,2.56,-2.37]} rotation={[0,Math.PI/2,0]}>
-      <planeGeometry args={[2.78,2.82]}/><meshPhysicalMaterial color="#dfe8e3" transparent opacity={.09} roughness={.15} depthWrite={false} side={THREE.DoubleSide}/>
+      <planeGeometry args={[2.78,2.82]}/>
+      <meshPhysicalMaterial color="#dfe8e3" transparent opacity={.09} roughness={.15} depthWrite={false} side={THREE.DoubleSide}/>
     </mesh>
     {[-3.78,-2.37,-.96].map((z,i)=><mesh key={'wm'+i} position={[-5.93,2.56,z]} castShadow>
-      <boxGeometry args={[.1,2.83,.085]}/>{trim}
+      <boxGeometry args={[.1,2.83,.085]}/>{paintedTrim}
     </mesh>)}
     {[1.15,2.56,3.98].map((y,i)=><mesh key={'wh'+i} position={[-5.93,y,-2.37]} castShadow>
-      <boxGeometry args={[.095,.085,2.84]}/>{trim}
+      <boxGeometry args={[.095,.085,2.84]}/>{paintedTrim}
     </mesh>)}
-    <mesh position={[0,.11,-5.91]}><boxGeometry args={[12.06,.19,.18]}/>{trim}</mesh>
-    <mesh position={[5.9,.11,-.1]}><boxGeometry args={[.18,.19,12]}/>{trim}</mesh>
-    <mesh position={[-5.9,.11,2.35]}><boxGeometry args={[.18,.19,6.7]}/>{trim}</mesh>
-    <mesh position={[0,5.08,-5.9]}><boxGeometry args={[12.04,.12,.19]}/>{trim}</mesh>
-    <mesh position={[5.91,5.08,-.1]}><boxGeometry args={[.17,.12,11.9]}/>{trim}</mesh>
+    {/* Subtle skirting and crown give the room readable corners and scale. */}
+    <mesh position={[0,.11,-5.91]}><boxGeometry args={[12.06,.19,.18]}/>{paintedTrim}</mesh>
+    <mesh position={[5.9,.11,-.1]}><boxGeometry args={[.18,.19,12]}/>{paintedTrim}</mesh>
+    <mesh position={[-5.9,.11,2.35]}><boxGeometry args={[.18,.19,6.7]}/>{paintedTrim}</mesh>
+    <mesh position={[0,5.08,-5.9]}><boxGeometry args={[12.04,.12,.19]}/>{paintedTrim}</mesh>
+    <mesh position={[5.91,5.08,-.1]}><boxGeometry args={[.17,.12,11.9]}/>{paintedTrim}</mesh>
     <mesh position={[0,5.16,-.13]} rotation={[Math.PI/2,0,0]} receiveShadow>
-      <planeGeometry args={[12.3,12.1]}/><meshStandardMaterial color="#e6dfd2" roughness={.96} side={THREE.DoubleSide}/>
+      <planeGeometry args={[12.3,12.1]}/>
+      <meshStandardMaterial color="#e6dfd2" roughness={.96} side={THREE.DoubleSide}/>
     </mesh>
+    {/* Architectural wall moulding, held well above the sofa. */}
     {[-.1,2.2,4.48].map((x,i)=><mesh key={'panel'+i} position={[x,3.2,-5.94]}>
-      <boxGeometry args={[.026,2.25,.038]}/>{trim}
+      <boxGeometry args={[.026,2.25,.038]}/>{paintedTrim}
     </mesh>)}
   </group>;
 }
@@ -135,6 +151,7 @@ function Rug({progress}) {
     if(!mesh.current)return;
     const t=smooth(.19,.265,progress.current);
     mesh.current.visible=t>.001;
+    // Unroll on the floor, never rise through the furniture or window.
     mesh.current.scale.set(1,Math.max(.001,t),1);
     mesh.current.position.y=.025+(1-t)*.015;
   });
@@ -148,7 +165,7 @@ function Arrival({url,position,width,enter,offset,rotation=0,progress}) {
   const root=useRef();
   const clone=useMemo(()=>{
     const object=gltf.scene.clone(true);
-    object.traverse(child=>{if(child.isMesh){child.castShadow=true;child.receiveShadow=true;}});
+    object.traverse((child)=>{if(child.isMesh){child.castShadow=true;child.receiveShadow=true;}});
     const box=new THREE.Box3().setFromObject(object),size=new THREE.Vector3(),center=new THREE.Vector3();
     box.getSize(size);box.getCenter(center);
     const scale=width/Math.max(size.x,.001);
@@ -160,6 +177,8 @@ function Arrival({url,position,width,enter,offset,rotation=0,progress}) {
     const group=root.current;if(!group)return;
     const t=smooth(enter,enter+.085,progress.current);
     group.visible=t>.003;
+    // Each object moves independently from an entrance path and settles on
+    // the floor. No furniture is visible before its scroll chapter.
     group.position.set(position[0]+offset[0]*(1-t),offset[1]*(1-t),position[2]+offset[2]*(1-t));
     group.rotation.set((1-t)*.065,rotation+(1-t)*.28,(1-t)*-.08);
     group.scale.setScalar(.94+.06*t);
@@ -170,7 +189,8 @@ function Arrival({url,position,width,enter,offset,rotation=0,progress}) {
 function Lamp({ progress }) {
   const g=useRef();
   useFrame(()=>{if(!g.current)return;const p=progress.current,t=smooth(.70,.765,p);
-    g.current.visible=t>.003;g.current.position.set(4.58+(1-t)*2.3,(1-t)*.9,-4.2+(1-t)*3.1);
+    g.current.visible=t>.003;
+    g.current.position.set(4.58+(1-t)*2.3,(1-t)*.9, -4.2+(1-t)*3.1);
     g.current.rotation.z=(1-t)*.4;
   });
   return <group ref={g} visible={false}>
@@ -204,11 +224,16 @@ function Details({ progress }) {
 }
 
 function CameraRig({progress,compact}) {
-  const {camera}=useThree(),target=useRef(new THREE.Vector3(0,1.95,-2.4));
-  const cameraGoal=useRef(new THREE.Vector3()),lookGoal=useRef(new THREE.Vector3());
+  const {camera}=useThree();
+  const target=useRef(new THREE.Vector3(0,1.95,-2.4));
+  const cameraGoal=useRef(new THREE.Vector3());
+  const lookGoal=useRef(new THREE.Vector3());
   useFrame((state,delta)=>{
     const p=progress.current;
-    const enter=smooth(.02,.165,p),finish=smooth(.875,.995,p);
+    // First scroll: enter the EMPTY room. No object arrives until this finishes.
+    const enter=smooth(.02,.165,p);
+    // Final scroll: dolly through the COMPLETED room, never during assembly.
+    const finish=smooth(.875,.995,p);
     const start=compact?[.55,2.75,24.0]:[.9,2.73,14.8];
     const settle=compact?[.35,2.55,19.0]:[.72,2.44,10.5];
     const explore=compact?[1.1,2.14,12.6]:[1.15,1.96,4.95];
@@ -217,13 +242,19 @@ function CameraRig({progress,compact}) {
       THREE.MathUtils.lerp(THREE.MathUtils.lerp(start[1],settle[1],enter),explore[1],finish),
       THREE.MathUtils.lerp(THREE.MathUtils.lerp(start[2],settle[2],enter),explore[2],finish)
     );
-    lookGoal.current.set(THREE.MathUtils.lerp(0,.5,finish),THREE.MathUtils.lerp(2.03,1.42,finish),THREE.MathUtils.lerp(-2.2,-3.65,finish));
+    lookGoal.current.set(
+      THREE.MathUtils.lerp(0, .5,finish),
+      THREE.MathUtils.lerp(2.03,1.42,finish),
+      THREE.MathUtils.lerp(-2.2,-3.65,finish)
+    );
+    // Smooth but deterministic: reversing scroll reverses the entire scene.
     const damping=1-Math.exp(-delta*6.8);
     camera.position.lerp(cameraGoal.current,damping);
     target.current.lerp(lookGoal.current,damping);
     camera.lookAt(target.current);
     const fov=THREE.MathUtils.lerp(
-      THREE.MathUtils.lerp(compact?60:53,compact?56:49,enter),compact?51:42,finish
+      THREE.MathUtils.lerp(compact?60:53,compact?56:49,enter),
+      compact?51:42, finish
     );
     if(Math.abs(camera.fov-fov)>.02){camera.fov=fov;camera.updateProjectionMatrix();}
   });
@@ -231,7 +262,7 @@ function CameraRig({progress,compact}) {
 }
 
 function Interior({progress,compact,manifest}) {
-  const model=slug=>'/models/'+slug+'/'+slug+'_1k.gltf';
+  const model=(slug)=>`/models/${slug}/${slug}_1k.gltf`;
   return <>
     <color attach="background" args={['#ded7cc']}/>
     <hemisphereLight args={['#f9f6ee','#9e8b77',1.05]}/>
@@ -240,10 +271,10 @@ function Interior({progress,compact,manifest}) {
     <directionalLight position={[4.5,5.5,5]} intensity={.36} color="#e3e9e5"/>
     <RoomShell/>
     <Rug progress={progress}/>
-    {manifest.sofa_03&&<Arrival url={model('sofa_03')} position={[-.72,0,-4.25]} width={3.05} enter={.275} offset={[-4.6,1.1,4.5]} rotation={-.03} progress={progress}/>}
-    {manifest.modern_arm_chair_01&&<Arrival url={model('modern_arm_chair_01')} position={[3.08,0,-2.08]} width={1.16} enter={.405} offset={[3.4,1.05,3.8]} rotation={-.48} progress={progress}/>}
-    {manifest.modern_coffee_table_01&&<Arrival url={model('modern_coffee_table_01')} position={[-.15,0,-1.69]} width={1.56} enter={.515} offset={[.4,1.1,5.4]} rotation={.03} progress={progress}/>}
-    {manifest.potted_plant_02&&<Arrival url={model('potted_plant_02')} position={[-4.66,0,-4.28]} width={.92} enter={.615} offset={[-1.1,.82,4.2]} rotation={.25} progress={progress}/>}
+    {manifest.sofa_03&&<Arrival url={model('sofa_03')} position={[-.72,0,-4.25]} width={3.05} enter={.275} offset={[-4.6,1.1,4.5]} rotation={-.03} progress={progress}/>} 
+    {manifest.modern_arm_chair_01&&<Arrival url={model('modern_arm_chair_01')} position={[3.08,0,-2.08]} width={1.16} enter={.405} offset={[3.4,1.05,3.8]} rotation={-.48} progress={progress}/>} 
+    {manifest.modern_coffee_table_01&&<Arrival url={model('modern_coffee_table_01')} position={[-.15,0,-1.69]} width={1.56} enter={.515} offset={[.4,1.1,5.4]} rotation={.03} progress={progress}/>} 
+    {manifest.potted_plant_02&&<Arrival url={model('potted_plant_02')} position={[-4.66,0,-4.28]} width={.92} enter={.615} offset={[-1.1,.82,4.2]} rotation={.25} progress={progress}/>} 
     <Lamp progress={progress}/>
     <Details progress={progress}/>
     <CameraRig progress={progress} compact={compact}/>
