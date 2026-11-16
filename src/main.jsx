@@ -33,7 +33,7 @@ function App(){
  useEffect(()=>{let active=true;const controller=new AbortController();fetch('/models/manifest.json',{signal:controller.signal}).then(r=>{if(!r.ok)throw Error('3D asset manifest missing');return r.json()}).then(x=>{if(active)setManifest(x)}).catch(()=>{if(active)setModelsIssue(true)});return()=>{active=false;controller.abort();};},[]);
  useEffect(()=>{const media=matchMedia('(max-width: 700px)');const handler=()=>setCompact(media.matches);media.addEventListener('change',handler);return()=>media.removeEventListener('change',handler);},[]);
  useEffect(()=>{if(staticMode)return;let raf=0;const read=()=>{const node=section.current;if(!node)return;const rect=node.getBoundingClientRect(),range=Math.max(1,rect.height-innerHeight);const n=clamp(-rect.top/range);progress.current=n;setVisibleProgress(Math.round(n*120)/120);raf=0;};const onScroll=()=>{if(!raf)raf=requestAnimationFrame(read)};read();window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll,{passive:true});return()=>{window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll);if(raf)cancelAnimationFrame(raf);}},[staticMode]);
- const introAlpha=1-interpolate(.07,.2,visibleProgress),detailAlpha=interpolate(.38,.48,visibleProgress)*(1-interpolate(.62,.73,visibleProgress));
+ const introAlpha=1-interpolate(.04,.16,visibleProgress);
  return <>
   <a className="skip-link" href="#enquire">Skip to enquiry</a>
   <header className="site-header"><a href="#top" className="identity" aria-label="RIVS home">RIVS<span>.</span></a>
@@ -49,9 +49,7 @@ function App(){
      {!manifest&&!modelsIssue&&!staticMode&&<div className="loading-scene" role="status">Preparing your space…</div>}
      {modelsIssue&&<div className="loading-scene asset-error" role="status">The room isn’t available on this connection. <button type="button" onClick={()=>location.reload()}>Try again</button></div>}
      <div className="stage-shade" aria-hidden="true"/>
-     <div className="stage-copy" style={{opacity:staticMode?1:introAlpha}}><p>Considered interiors</p><h1>Space to <em>feel.</em></h1><span>Rooms take shape, one detail at a time.</span></div>
-     {!staticMode&&<div className="stage-detail" style={{opacity:detailAlpha}}><p>Every object belongs.</p></div>}
-     <div className="stage-bottom"><span>{staticMode?'Explore the vision':'Scroll to reveal'}</span><div className="line" aria-hidden="true"><div style={{transform:`scaleX(${staticMode?1:visibleProgress})`}}/></div><span className="bottom-word">RIVS</span></div>
+     <div className="stage-copy" style={{opacity:staticMode?1:introAlpha}}><p>Considered interiors</p><h1>Space to <em>feel.</em></h1></div>
      </div>
    </section>
    <section className="closing" id="enquire"><div className="closing-content"><p className="eyebrow">RIVS interiors</p><h2>Designed for the way <em>life feels.</em></h2><p>Every space begins with a conversation.</p><button className="closing-cta" onClick={()=>setContactOpen(true)}>Tell us about yours <span aria-hidden="true">↗</span></button></div><footer className="footer"><span>RIVS.</span><span>Built around living. <a className="credit-link" href="https://polyhaven.com/" target="_blank" rel="noreferrer">3D assets: Poly Haven</a></span></footer></section>
